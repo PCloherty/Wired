@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const gravatar=require('gravatar')
+const gravatar = require('gravatar');
+const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 
 //import user model
-const User = require('../../models/User')
+const User = require('../../models/User');
 
 //@route POST api/users
 //@desc Register user
@@ -24,32 +25,47 @@ router.post(
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        
-        const{name,email,password} = request.body
-        
-        try{
-            //see if user exists
-            let user=await User.findOne({email});
-            if(user){
-                res.status(400).json({error:[{msg: 'User already exists'}]})
-            }
-        
-        //if so head back error
-        
-        //get user gravatar (globally recognised avatar)
 
-        //encrypt password
-        
-        //return jsonwebtoken
-        res.send('User route');
-        }
-        catch(err) {
+        const { name, email, password } = req.body;
+
+        try {
+            //see if user exists
+            let user = await User.findOne({ email });
+            if (user) {
+                return res.status(400).json({
+                    error: [{ msg: 'User already exists' }],
+                });
+            }
+
+            //get user gravatar (globally recognised avatar)
+            const avatar = gravatar.url(email, {
+                //size
+                s: '200',
+                //rating
+                r: 'pg',
+                //default
+                d: 'mn',
+            });
+
+            user = new User({
+                name,
+                email,
+                avatar,
+                password,
+            });
+            //encrypt password
+            const salt = await bcrypt.genSalt(10);
+
+            user.password = await bcrypt.hash(password, salt);
+            await user.save();
+
+
+            //return jsonwebtoken
+            res.send('User Registered');
+        } catch (err) {
             console.log(err.message);
-            res.status(500).send('server error')
+            res.status(500).send('server error');
         }
-        
-        
-        
     }
 );
 
