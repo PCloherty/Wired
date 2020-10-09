@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const profileSchema = new mongoose.Schema({
+const ProfileSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
@@ -79,7 +79,7 @@ const profileSchema = new mongoose.Schema({
                 default: false,
             },
             current: {
-                boolean,
+                type:Boolean,
                 default: false,
             },
             description: {
