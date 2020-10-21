@@ -60,23 +60,23 @@ const ProfileSchema = new mongoose.Schema({
         {
             school: {
                 type: String,
-                required: true,
+                required: true
             },
             degree: {
                 type: String,
-                required: true,
+                required: true
             },
             fieldofstudy: {
                 type: String,
-                required: true,
+                required: true
             },
             from: {
                 type: Date,
-                required: true,
+                required: true
             },
             to: {
-                type: Date,
-                default: false,
+                type: Date
+                
             },
             current: {
                 type:Boolean,
