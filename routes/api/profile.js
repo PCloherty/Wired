@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
+const config = require(`config`);
+const axios = require('axios');
 const { check, validationResult } = require('express-validator');
-const Profile = require('../../models/profile');
+const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
 //@route GET api/profile/github/:username
@@ -18,8 +20,8 @@ router.get('/github/:username', async (req,res) => {
             Authorization: `token ${config.get('githubToken')}`
         };
 
-        const gitHubResponse = await axios.get(uri, { headers });
-        return res.json(gitHubResponse.data);
+        const githubResponse = await axios.get(uri, { headers });
+        return res.json(githubResponse.data);
     } catch (err) {
         console.error(err.message);
         return res.status(404).json({ msg: 'No Github profile found'})
