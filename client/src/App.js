@@ -5,8 +5,13 @@ import Navbar from './components/layout/Navbar.js';
 import Landing from './components/layout/Landing.js';
 import Login from './components/auth/login.js';
 import Register from './components/auth/register.js';
+//redux
+import{Provider} from 'react-redux';
+import store from'./store'
+
 function App() {
     return (
+        <Provider store={store}>
         <Router>
 
             <Navbar></Navbar>
@@ -18,6 +23,7 @@ function App() {
               </Switch>
             </section>
         </Router>
+        </Provider>
     );
 }
 
